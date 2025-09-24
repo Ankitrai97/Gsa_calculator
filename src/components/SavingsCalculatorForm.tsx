@@ -58,11 +58,11 @@ export const SavingsCalculatorForm: React.FC<SavingsCalculatorFormProps> = ({ on
   const form = useForm<CalculatorData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      employees: 0,
-      monthlyCost: 0,
-      penaltyFees: 0,
-      softwareSpend: 0,
-      hoursSpent: 0,
+      employees: "", // Changed from 0 to ""
+      monthlyCost: "", // Changed from 0 to ""
+      penaltyFees: "", // Changed from 0 to ""
+      softwareSpend: "", // Changed from 0 to ""
+      hoursSpent: "", // Changed from 0 to ""
       firstName: "",
       lastName: "",
       email: "",
