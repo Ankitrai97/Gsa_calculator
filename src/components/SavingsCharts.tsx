@@ -92,14 +92,14 @@ export const SavingsCharts: React.FC<CalculationResult> = ({
           <CardTitle className="text-xl">Savings Breakdown</CardTitle>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={350}> {/* Increased height to 350 */}
-            <PieChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+          <ResponsiveContainer width="100%" height={350}>
+            <PieChart margin={{ top: 20, right: 40, bottom: 20, left: 40 }}> {/* Increased horizontal margins */}
               <Pie
                 data={savingsBreakdownData}
                 cx="50%"
                 cy="50%"
-                innerRadius={55}
-                outerRadius={85}
+                innerRadius={45} // Reduced innerRadius
+                outerRadius={70} // Reduced outerRadius
                 fill="#8884d8"
                 dataKey="value"
                 label={renderCustomizedLabel}
