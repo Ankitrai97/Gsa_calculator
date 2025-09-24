@@ -47,7 +47,7 @@ export const SavingsCharts: React.FC<CalculationResult> = ({
     }).format(value);
 
   return (
-    <div className="w-full mt-8 grid gap-4 animate-fade-in"> {/* Removed max-w-lg */}
+    <div className="w-full mt-8 grid gap-4 animate-fade-in">
       <Card>
         <CardHeader>
           <CardTitle className="text-xl">Annual Cost Comparison</CardTitle>
@@ -72,16 +72,17 @@ export const SavingsCharts: React.FC<CalculationResult> = ({
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={250}>
-            <PieChart>
+            <PieChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}> {/* Added margin */}
               <Pie
                 data={savingsBreakdownData}
                 cx="50%"
                 cy="50%"
-                labelLine={false}
-                outerRadius={80}
+                innerRadius={60} // Added innerRadius for donut chart
+                outerRadius={90} // Increased outerRadius
                 fill="#8884d8"
                 dataKey="value"
                 label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                labelLine={false} // Keep labelLine false to avoid lines
               >
                 {savingsBreakdownData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
