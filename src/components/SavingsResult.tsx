@@ -37,7 +37,7 @@ export const SavingsResult: React.FC<SavingsResultProps> = ({ totalSavings, perc
           Most businesses save between 25–40% by streamlining back-office operations.
         </p>
         <Button asChild className="mt-6 w-full sm:w-auto bg-blue-600 hover:bg-blue-700">
-          <a href="https://calendly.com" target="_blank" rel="noopener noreferrer">
+          <a href="https://cal.com/subrahmanyagsa/30min" target="_blank" rel="noopener noreferrer">
             Book a Free Consultation
           </a>
         </Button>
