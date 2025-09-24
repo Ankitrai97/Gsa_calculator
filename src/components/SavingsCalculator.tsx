@@ -1,7 +1,7 @@
 import * as React from "react";
 import { SavingsCalculatorForm, type CalculatorData } from "./SavingsCalculatorForm";
 import { SavingsDisplay } from "./SavingsDisplay";
-import { Card } from "@/components/ui/card"; // Import Card for consistent styling
+import { Card } from "@/components/ui/card";
 
 export interface CalculationResult {
   totalSavings: number;
@@ -58,8 +58,10 @@ export const SavingsCalculator: React.FC = () => {
 
   return (
     <div className="w-full">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-        <SavingsCalculatorForm onCalculate={handleCalculate} />
+      <div className={`grid grid-cols-1 gap-8 items-start ${result ? 'md:grid-cols-2' : 'md:grid-cols-1'}`}>
+        <div className={result ? '' : 'mx-auto w-full max-w-lg'}> {/* Conditional centering */}
+          <SavingsCalculatorForm onCalculate={handleCalculate} />
+        </div>
         {result && (
           <SavingsDisplay
             totalSavings={result.totalSavings}

@@ -47,7 +47,7 @@ export const SavingsCharts: React.FC<CalculationResult> = ({
     }).format(value);
 
   return (
-    <div className="w-full max-w-lg mx-auto mt-8 grid gap-4 animate-fade-in">
+    <div className="w-full mt-8 grid gap-4 animate-fade-in"> {/* Removed max-w-lg */}
       <Card>
         <CardHeader>
           <CardTitle className="text-xl">Annual Cost Comparison</CardTitle>
