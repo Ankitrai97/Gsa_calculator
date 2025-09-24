@@ -18,40 +18,47 @@ export const SavingsCalculator: React.FC = () => {
   const handleCalculate = (data: CalculatorData) => {
     const { employees, monthlyCost, penaltyFees, softwareSpend, hoursSpent } = data;
 
-    // Calculate the total annual cost before any optimizations.
-    const baselineAnnualCost =
+    // Calculate the core operational annual cost (excluding bookkeeping hours for now)
+    const coreOperationalAnnualCost =
       (employees * monthlyCost * 12) + // Annual salary costs
       (softwareSpend * 12) +           // Annual software costs
       penaltyFees;                     // Annual penalty fees
 
-    // Assume a baseline saving of 25% on total costs through optimization.
-    const optimizedAnnualCost = baselineAnnualCost * 0.75;
-    
-    // Calculate the value of time saved, assuming a value of $50/hour.
-    // As per the user's example, hoursSpent (monthly) * hourlyRate ($50) is treated as an annual gain.
-    const estimatedEfficiencyGain = (hoursSpent * 50); 
+    // Calculate the annual cost associated with bookkeeping hours
+    const annualBookkeepingCost = hoursSpent * 50; // Assuming $50/hour annual value
 
-    // The total savings are the cost reduction plus the value of time saved.
-    const costReduction = baselineAnnualCost - optimizedAnnualCost;
-    const totalSavings = costReduction + estimatedEfficiencyGain;
+    // Total baseline annual cost (including all current expenditures)
+    const totalBaselineAnnualCost = coreOperationalAnnualCost + annualBookkeepingCost;
 
-    // Calculate the savings as a percentage of the original baseline cost.
+    // Savings from core operational costs (25% reduction)
+    const costReductionFromOperations = coreOperationalAnnualCost * 0.25;
+
+    // Savings from efficiency (100% elimination of bookkeeping hours cost)
+    const efficiencyGainFromBookkeeping = annualBookkeepingCost;
+
+    // Total savings is the sum of operational cost reduction and bookkeeping efficiency gain
+    const totalSavings = costReductionFromOperations + efficiencyGainFromBookkeeping;
+
+    // Optimized annual cost
+    const totalOptimizedAnnualCost = totalBaselineAnnualCost - totalSavings;
+
+    // Calculate the savings as a percentage of the original total baseline cost.
     const percentageSavings =
-      baselineAnnualCost > 0 ? (totalSavings / baselineAnnualCost) * 100 : 0;
+      totalBaselineAnnualCost > 0 ? (totalSavings / totalBaselineAnnualCost) * 100 : 0;
 
     setResult({ 
         totalSavings: Math.max(0, totalSavings),
         percentageSavings: Math.max(0, percentageSavings),
-        baselineAnnualCost: baselineAnnualCost,
-        optimizedAnnualCost: optimizedAnnualCost,
-        costReduction: costReduction,
-        estimatedEfficiencyGain: estimatedEfficiencyGain,
+        baselineAnnualCost: totalBaselineAnnualCost,
+        optimizedAnnualCost: totalOptimizedAnnualCost,
+        costReduction: costReductionFromOperations, // Used for the pie chart breakdown
+        estimatedEfficiencyGain: efficiencyGainFromBookkeeping, // Used for the pie chart breakdown
     });
   };
 
   return (
     <div className="w-full">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start"> {/* Responsive grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
         <SavingsCalculatorForm onCalculate={handleCalculate} />
         {result && (
           <SavingsDisplay
