@@ -53,7 +53,7 @@ export const SavingsCharts: React.FC<CalculationResult> = ({
   optimizedAnnualCost,
   costReduction,
   estimatedEfficiencyGain,
-  totalSavings, // Added totalSavings to props
+  totalSavings,
 }) => {
   const costComparisonData = [
     { name: "Current Annual Cost", value: baselineAnnualCost },
@@ -99,7 +99,7 @@ export const SavingsCharts: React.FC<CalculationResult> = ({
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={250}>
-            <PieChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+            <PieChart> {/* Removed margin prop */}
               <Pie
                 data={savingsBreakdownData}
                 cx="50%"
@@ -108,14 +108,14 @@ export const SavingsCharts: React.FC<CalculationResult> = ({
                 outerRadius={90}
                 fill="#8884d8"
                 dataKey="value"
-                labelLine={false} // Removed label prop
+                labelLine={false}
               >
                 {savingsBreakdownData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
               <Tooltip formatter={(value: number) => formatCurrency(value)} />
-              <Legend content={<CustomPieChartLegend totalSavings={totalSavings} />} /> {/* Using custom legend */}
+              <Legend content={<CustomPieChartLegend totalSavings={totalSavings} />} />
             </PieChart>
           </ResponsiveContainer>
         </CardContent>
