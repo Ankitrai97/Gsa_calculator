@@ -21,7 +21,9 @@ export const SavingsCalculator: React.FC = () => {
     const optimizedAnnualCost = baselineAnnualCost * 0.75;
     
     // Calculate the value of time saved, assuming a value of $50/hour.
-    const estimatedEfficiencyGain = (hoursSpent * 50) * 12; // Annual efficiency gain
+    // hoursSpent is already considered a monthly figure, so we calculate the monthly value
+    // and then annualize it.
+    const estimatedEfficiencyGain = (hoursSpent * 50); // Monthly efficiency gain
 
     // The total savings are the cost reduction plus the value of time saved.
     const totalSavings = (baselineAnnualCost - optimizedAnnualCost) + estimatedEfficiencyGain;
