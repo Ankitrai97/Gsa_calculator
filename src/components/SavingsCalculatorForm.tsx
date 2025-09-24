@@ -57,8 +57,8 @@ export const SavingsCalculatorForm: React.FC<SavingsCalculatorFormProps> = ({ on
               <Input id="employees" type="number" placeholder="e.g., 2" value={employees} onChange={(e) => setEmployees(e.target.value)} />
             </div>
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="monthlyCost">Monthly cost of in-house accountant(s)</Label>
-              <Input id="monthlyCost" type="number" placeholder="e.g., 8000" value={monthlyCost} onChange={(e) => setMonthlyCost(e.target.value)} />
+              <Label htmlFor="monthlyCost">Average monthly salary per accountant</Label>
+              <Input id="monthlyCost" type="number" placeholder="e.g., 4000" value={monthlyCost} onChange={(e) => setMonthlyCost(e.target.value)} />
             </div>
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="penaltyFees">Average annual compliance/penalty fees</Label>
