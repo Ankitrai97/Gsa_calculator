@@ -46,32 +46,6 @@ export const SavingsCharts: React.FC<CalculationResult> = ({
       maximumFractionDigits: 0,
     }).format(value);
 
-  // Custom label renderer for the Pie Chart
-  const renderCustomizedLabel = ({ cx, cy, midAngle, outerRadius, percent, name }: any) => {
-    const RADIAN = Math.PI / 180;
-    const offsetFromCenter = outerRadius + 40; // Vertical distance from center of pie to label
-
-    // Determine if the slice is in the top or bottom half of the circle
-    // This helps decide if the label should be placed above or below the pie's center
-    const isTopHalf = Math.sin(-midAngle * RADIAN) > 0;
-
-    const x = cx; // Always center the label horizontally
-    const y = cy + (isTopHalf ? -offsetFromCenter : offsetFromCenter); // Position label above or below
-
-    return (
-      <text
-        x={x}
-        y={y}
-        fill="hsl(var(--foreground))"
-        textAnchor="middle" // Center text horizontally
-        dominantBaseline={isTopHalf ? "alphabetic" : "hanging"} // Adjust vertical alignment
-        className="text-xs sm:text-sm"
-      >
-        {`${name}: ${(percent * 100).toFixed(0)}%`}
-      </text>
-    );
-  };
-
   return (
     <div className="w-full mt-8 grid gap-4 animate-fade-in">
       <Card>
@@ -97,18 +71,18 @@ export const SavingsCharts: React.FC<CalculationResult> = ({
           <CardTitle className="text-xl">Savings Breakdown</CardTitle>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={350}>
-            <PieChart margin={{ top: 20, right: 40, bottom: 20, left: 40 }}>
+          <ResponsiveContainer width="100%" height={300}> {/* Increased height */}
+            <PieChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
               <Pie
                 data={savingsBreakdownData}
                 cx="50%"
                 cy="50%"
-                innerRadius={45}
-                outerRadius={70}
+                innerRadius={55} // Adjusted innerRadius
+                outerRadius={85} // Adjusted outerRadius
                 fill="#8884d8"
                 dataKey="value"
-                label={renderCustomizedLabel}
-                labelLine={true}
+                label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                labelLine={false}
               >
                 {savingsBreakdownData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
