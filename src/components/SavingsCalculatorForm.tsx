@@ -182,7 +182,7 @@ export const SavingsCalculatorForm: React.FC<SavingsCalculatorFormProps> = ({ on
                     <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input type="email" placeholder="john.doe@example.com" {...field} />
+                        <Input type="email" placeholder="john.doe@company.com" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
