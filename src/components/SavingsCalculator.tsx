@@ -1,12 +1,18 @@
 import * as React from "react";
 import { SavingsCalculatorForm, type CalculatorData } from "./SavingsCalculatorForm";
-import { SavingsResult } from "./SavingsResult";
+import { SavingsDisplay } from "./SavingsDisplay"; // New component to be created
+
+export interface CalculationResult {
+  totalSavings: number;
+  percentageSavings: number;
+  baselineAnnualCost: number;
+  optimizedAnnualCost: number;
+  costReduction: number;
+  estimatedEfficiencyGain: number;
+}
 
 export const SavingsCalculator: React.FC = () => {
-  const [result, setResult] = React.useState<{
-    totalSavings: number;
-    percentageSavings: number;
-  } | null>(null);
+  const [result, setResult] = React.useState<CalculationResult | null>(null);
 
   const handleCalculate = (data: CalculatorData) => {
     const { employees, monthlyCost, penaltyFees, softwareSpend, hoursSpent } = data;
@@ -21,12 +27,12 @@ export const SavingsCalculator: React.FC = () => {
     const optimizedAnnualCost = baselineAnnualCost * 0.75;
     
     // Calculate the value of time saved, assuming a value of $50/hour.
-    // hoursSpent is already considered a monthly figure, so we calculate the monthly value
-    // and then annualize it.
-    const estimatedEfficiencyGain = (hoursSpent * 50); // Monthly efficiency gain
+    // As per the user's example, hoursSpent (monthly) * hourlyRate ($50) is treated as an annual gain.
+    const estimatedEfficiencyGain = (hoursSpent * 50); 
 
     // The total savings are the cost reduction plus the value of time saved.
-    const totalSavings = (baselineAnnualCost - optimizedAnnualCost) + estimatedEfficiencyGain;
+    const costReduction = baselineAnnualCost - optimizedAnnualCost;
+    const totalSavings = costReduction + estimatedEfficiencyGain;
 
     // Calculate the savings as a percentage of the original baseline cost.
     const percentageSavings =
@@ -34,7 +40,11 @@ export const SavingsCalculator: React.FC = () => {
 
     setResult({ 
         totalSavings: Math.max(0, totalSavings),
-        percentageSavings: Math.max(0, percentageSavings)
+        percentageSavings: Math.max(0, percentageSavings),
+        baselineAnnualCost: baselineAnnualCost,
+        optimizedAnnualCost: optimizedAnnualCost,
+        costReduction: costReduction,
+        estimatedEfficiencyGain: estimatedEfficiencyGain,
     });
   };
 
@@ -42,9 +52,13 @@ export const SavingsCalculator: React.FC = () => {
     <div className="w-full">
       <SavingsCalculatorForm onCalculate={handleCalculate} />
       {result && (
-        <SavingsResult
+        <SavingsDisplay
           totalSavings={result.totalSavings}
           percentageSavings={result.percentageSavings}
+          baselineAnnualCost={result.baselineAnnualCost}
+          optimizedAnnualCost={result.optimizedAnnualCost}
+          costReduction={result.costReduction}
+          estimatedEfficiencyGain={result.estimatedEfficiencyGain}
         />
       )}
     </div>

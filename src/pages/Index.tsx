@@ -1,15 +1,17 @@
 import { SavingsCalculator } from "@/components/SavingsCalculator";
 import { MadeWithDyad } from "@/components/made-with-dyad";
-import { Navbar } from "@/components/Navbar"; // Import the new Navbar component
+import { Navbar } from "@/components/Navbar";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center p-4">
-      <Navbar /> {/* Place the Navbar at the top */}
-      <div className="flex-grow flex flex-col items-center justify-center w-full max-w-lg">
-        <SavingsCalculator />
-      </div>
-      <div className="w-full mt-8"> {/* Remove absolute positioning and add margin-top */}
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col items-center p-4">
+      <Navbar />
+      <main className="flex-grow flex flex-col items-center justify-center w-full max-w-4xl px-4">
+        <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-lg mb-8">
+          <SavingsCalculator />
+        </div>
+      </main>
+      <div className="w-full mt-8">
         <MadeWithDyad />
       </div>
     </div>
