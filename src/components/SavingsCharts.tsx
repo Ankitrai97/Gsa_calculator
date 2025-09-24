@@ -49,7 +49,7 @@ export const SavingsCharts: React.FC<CalculationResult> = ({
   // Custom label renderer for the Pie Chart
   const renderCustomizedLabel = ({ cx, cy, midAngle, outerRadius, percent, name }: any) => {
     const RADIAN = Math.PI / 180;
-    const radius = outerRadius + 25; // Position labels 25px outside the pie
+    const radius = outerRadius + 40; // Increased label offset to 40px outside the pie
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
@@ -57,10 +57,10 @@ export const SavingsCharts: React.FC<CalculationResult> = ({
       <text
         x={x}
         y={y}
-        fill="hsl(var(--foreground))" // Use foreground color for better visibility
+        fill="hsl(var(--foreground))"
         textAnchor={x > cx ? 'start' : 'end'}
         dominantBaseline="central"
-        className="text-xs sm:text-sm" // Responsive text size
+        className="text-xs sm:text-sm"
       >
         {`${name}: ${(percent * 100).toFixed(0)}%`}
       </text>
@@ -92,7 +92,7 @@ export const SavingsCharts: React.FC<CalculationResult> = ({
           <CardTitle className="text-xl">Savings Breakdown</CardTitle>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={300}>
+          <ResponsiveContainer width="100%" height={350}> {/* Increased height to 350 */}
             <PieChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
               <Pie
                 data={savingsBreakdownData}
@@ -102,8 +102,8 @@ export const SavingsCharts: React.FC<CalculationResult> = ({
                 outerRadius={85}
                 fill="#8884d8"
                 dataKey="value"
-                label={renderCustomizedLabel} // Use the custom label renderer
-                labelLine={true} // Enable label lines
+                label={renderCustomizedLabel}
+                labelLine={true}
               >
                 {savingsBreakdownData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
