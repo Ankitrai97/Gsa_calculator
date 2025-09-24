@@ -46,6 +46,27 @@ export const SavingsCharts: React.FC<CalculationResult> = ({
       maximumFractionDigits: 0,
     }).format(value);
 
+  // Custom label renderer for the Pie Chart
+  const renderCustomizedLabel = ({ cx, cy, midAngle, outerRadius, percent, name }: any) => {
+    const RADIAN = Math.PI / 180;
+    const radius = outerRadius + 25; // Position labels 25px outside the pie
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+    return (
+      <text
+        x={x}
+        y={y}
+        fill="hsl(var(--foreground))" // Use foreground color for better visibility
+        textAnchor={x > cx ? 'start' : 'end'}
+        dominantBaseline="central"
+        className="text-xs sm:text-sm" // Responsive text size
+      >
+        {`${name}: ${(percent * 100).toFixed(0)}%`}
+      </text>
+    );
+  };
+
   return (
     <div className="w-full mt-8 grid gap-4 animate-fade-in">
       <Card>
@@ -71,18 +92,18 @@ export const SavingsCharts: React.FC<CalculationResult> = ({
           <CardTitle className="text-xl">Savings Breakdown</CardTitle>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={300}> {/* Increased height */}
+          <ResponsiveContainer width="100%" height={300}>
             <PieChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
               <Pie
                 data={savingsBreakdownData}
                 cx="50%"
                 cy="50%"
-                innerRadius={55} // Adjusted innerRadius
-                outerRadius={85} // Adjusted outerRadius
+                innerRadius={55}
+                outerRadius={85}
                 fill="#8884d8"
                 dataKey="value"
-                label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                labelLine={false}
+                label={renderCustomizedLabel} // Use the custom label renderer
+                labelLine={true} // Enable label lines
               >
                 {savingsBreakdownData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
