@@ -49,17 +49,22 @@ export const SavingsCharts: React.FC<CalculationResult> = ({
   // Custom label renderer for the Pie Chart
   const renderCustomizedLabel = ({ cx, cy, midAngle, outerRadius, percent, name }: any) => {
     const RADIAN = Math.PI / 180;
-    const radius = outerRadius + 40; // Increased label offset to 40px outside the pie
-    const x = cx + radius * Math.cos(-midAngle * RADIAN);
-    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+    const offsetFromCenter = outerRadius + 40; // Vertical distance from center of pie to label
+
+    // Determine if the slice is in the top or bottom half of the circle
+    // This helps decide if the label should be placed above or below the pie's center
+    const isTopHalf = Math.sin(-midAngle * RADIAN) > 0;
+
+    const x = cx; // Always center the label horizontally
+    const y = cy + (isTopHalf ? -offsetFromCenter : offsetFromCenter); // Position label above or below
 
     return (
       <text
         x={x}
         y={y}
         fill="hsl(var(--foreground))"
-        textAnchor={x > cx ? 'start' : 'end'}
-        dominantBaseline="central"
+        textAnchor="middle" // Center text horizontally
+        dominantBaseline={isTopHalf ? "alphabetic" : "hanging"} // Adjust vertical alignment
         className="text-xs sm:text-sm"
       >
         {`${name}: ${(percent * 100).toFixed(0)}%`}
@@ -93,13 +98,13 @@ export const SavingsCharts: React.FC<CalculationResult> = ({
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={350}>
-            <PieChart margin={{ top: 20, right: 40, bottom: 20, left: 40 }}> {/* Increased horizontal margins */}
+            <PieChart margin={{ top: 20, right: 40, bottom: 20, left: 40 }}>
               <Pie
                 data={savingsBreakdownData}
                 cx="50%"
                 cy="50%"
-                innerRadius={45} // Reduced innerRadius
-                outerRadius={70} // Reduced outerRadius
+                innerRadius={45}
+                outerRadius={70}
                 fill="#8884d8"
                 dataKey="value"
                 label={renderCustomizedLabel}
