@@ -25,7 +25,7 @@ const Index = () => {
     const softwareOptimization = (data.softwareSpend * 12) * 0.125;
 
     // Calculate total potential savings
-    const totalSavings = duplicationCosts + penaltyRisk + efficiencyLoss - softwareOptimization;
+    const totalSavings = duplicationCosts + penaltyRisk + efficiencyLoss + softwareOptimization;
 
     // Calculate current spend to determine the savings percentage
     const currentAnnualSpend = (data.monthlyCost * 12) + penaltyRisk + (data.softwareSpend * 12) + efficiencyLoss;
