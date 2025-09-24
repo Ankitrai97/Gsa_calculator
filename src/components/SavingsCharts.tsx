@@ -71,18 +71,18 @@ export const SavingsCharts: React.FC<CalculationResult> = ({
           <CardTitle className="text-xl">Savings Breakdown</CardTitle>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={250}>
-            <PieChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}> {/* Added margin */}
+          <ResponsiveContainer width="100%" height={300}> {/* Increased height */}
+            <PieChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
               <Pie
                 data={savingsBreakdownData}
                 cx="50%"
                 cy="50%"
-                innerRadius={60} // Added innerRadius for donut chart
-                outerRadius={90} // Increased outerRadius
+                innerRadius={55} // Adjusted innerRadius
+                outerRadius={85} // Adjusted outerRadius
                 fill="#8884d8"
                 dataKey="value"
                 label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                labelLine={false} // Keep labelLine false to avoid lines
+                labelLine={false}
               >
                 {savingsBreakdownData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
