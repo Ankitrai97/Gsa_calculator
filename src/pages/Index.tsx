@@ -1,17 +1,21 @@
-// Update this page (the content is just a fallback if you fail to update the page)
-
+import { SavingsCalculatorForm, type CalculatorData } from "@/components/SavingsCalculatorForm";
 import { MadeWithDyad } from "@/components/made-with-dyad";
+import * as React from "react";
 
 const Index = () => {
+  const handleCalculate = (data: CalculatorData) => {
+    console.log("Calculating savings with data:", data);
+    // Calculation logic will go here in the next step
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">
-          Start building your amazing project here!
-        </p>
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
+      <div className="w-full max-w-lg">
+        <SavingsCalculatorForm onCalculate={handleCalculate} />
       </div>
-      <MadeWithDyad />
+      <div className="absolute bottom-0 w-full">
+        <MadeWithDyad />
+      </div>
     </div>
   );
 };
