@@ -6,8 +6,8 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col items-center p-4">
       <Navbar />
-      <main className="flex-grow flex flex-col items-center justify-center w-full max-w-4xl px-4">
-        <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-lg mb-8">
+      <main className="flex-grow flex flex-col items-center justify-center w-full max-w-4xl px-4"> {/* Changed max-w-lg to max-w-4xl */}
+        <div className="bg-white p-8 rounded-lg shadow-xl w-full mb-8"> {/* Removed max-w-lg here, let SavingsCalculator manage its own width */}
           <SavingsCalculator />
         </div>
       </main>

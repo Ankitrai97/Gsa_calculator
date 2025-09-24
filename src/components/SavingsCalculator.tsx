@@ -1,6 +1,7 @@
 import * as React from "react";
 import { SavingsCalculatorForm, type CalculatorData } from "./SavingsCalculatorForm";
-import { SavingsDisplay } from "./SavingsDisplay"; // New component to be created
+import { SavingsDisplay } from "./SavingsDisplay";
+import { Card } from "@/components/ui/card"; // Import Card for consistent styling
 
 export interface CalculationResult {
   totalSavings: number;
@@ -50,17 +51,19 @@ export const SavingsCalculator: React.FC = () => {
 
   return (
     <div className="w-full">
-      <SavingsCalculatorForm onCalculate={handleCalculate} />
-      {result && (
-        <SavingsDisplay
-          totalSavings={result.totalSavings}
-          percentageSavings={result.percentageSavings}
-          baselineAnnualCost={result.baselineAnnualCost}
-          optimizedAnnualCost={result.optimizedAnnualCost}
-          costReduction={result.costReduction}
-          estimatedEfficiencyGain={result.estimatedEfficiencyGain}
-        />
-      )}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start"> {/* Responsive grid */}
+        <SavingsCalculatorForm onCalculate={handleCalculate} />
+        {result && (
+          <SavingsDisplay
+            totalSavings={result.totalSavings}
+            percentageSavings={result.percentageSavings}
+            baselineAnnualCost={result.baselineAnnualCost}
+            optimizedAnnualCost={result.optimizedAnnualCost}
+            costReduction={result.costReduction}
+            estimatedEfficiencyGain={result.estimatedEfficiencyGain}
+          />
+        )}
+      </div>
     </div>
   );
 };
