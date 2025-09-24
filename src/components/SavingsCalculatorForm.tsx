@@ -1,4 +1,7 @@
 import * as React from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,36 +13,61 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
-export interface CalculatorData {
-  employees: number;
-  monthlyCost: number;
-  penaltyFees: number;
-  softwareSpend: number;
-  hoursSpent: number;
-}
+const formSchema = z.object({
+  employees: z.preprocess(
+    (val) => Number(val),
+    z.number().min(0, { message: "Must be a non-negative number." }).int({ message: "Must be a whole number." })
+  ),
+  monthlyCost: z.preprocess(
+    (val) => Number(val),
+    z.number().min(0, { message: "Must be a non-negative number." })
+  ),
+  penaltyFees: z.preprocess(
+    (val) => Number(val),
+    z.number().min(0, { message: "Must be a non-negative number." })
+  ),
+  softwareSpend: z.preprocess(
+    (val) => Number(val),
+    z.number().min(0, { message: "Must be a non-negative number." })
+  ),
+  hoursSpent: z.preprocess(
+    (val) => Number(val),
+    z.number().min(0, { message: "Must be a non-negative number." })
+  ),
+  firstName: z.string().min(1, { message: "First name is required." }),
+  lastName: z.string().min(1, { message: "Last name is required." }),
+  email: z.string().email({ message: "Please enter a valid email address." }),
+});
+
+export type CalculatorData = z.infer<typeof formSchema>;
 
 interface SavingsCalculatorFormProps {
   onCalculate: (data: CalculatorData) => void;
 }
 
 export const SavingsCalculatorForm: React.FC<SavingsCalculatorFormProps> = ({ onCalculate }) => {
-  const [employees, setEmployees] = React.useState("");
-  const [monthlyCost, setMonthlyCost] = React.useState("");
-  const [penaltyFees, setPenaltyFees] = React.useState("");
-  const [softwareSpend, setSoftwareSpend] = React.useState("");
-  const [hoursSpent, setHoursSpent] = React.useState("");
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onCalculate({
-      employees: Number(employees) || 0,
-      monthlyCost: Number(monthlyCost) || 0,
-      penaltyFees: Number(penaltyFees) || 0,
-      softwareSpend: Number(softwareSpend) || 0,
-      hoursSpent: Number(hoursSpent) || 0,
-    });
-  };
+  const form = useForm<CalculatorData>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      employees: 0,
+      monthlyCost: 0,
+      penaltyFees: 0,
+      softwareSpend: 0,
+      hoursSpent: 0,
+      firstName: "",
+      lastName: "",
+      email: "",
+    },
+  });
 
   return (
     <Card className="w-full max-w-lg mx-auto">
@@ -49,35 +77,125 @@ export const SavingsCalculatorForm: React.FC<SavingsCalculatorFormProps> = ({ on
           Estimate how much your business could save by optimizing its accounting and back-office operations.
         </CardDescription>
       </CardHeader>
-      <form onSubmit={handleSubmit}>
-        <CardContent>
-          <div className="grid w-full items-center gap-4">
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="employees">Number of employees in accounting/finance</Label>
-              <Input id="employees" type="number" placeholder="e.g., 2" value={employees} onChange={(e) => setEmployees(e.target.value)} />
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onCalculate)}>
+          <CardContent>
+            <div className="grid w-full items-center gap-4">
+              <FormField
+                control={form.control}
+                name="employees"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor="employees">Number of employees in accounting/finance</FormLabel>
+                    <FormControl>
+                      <Input id="employees" type="number" placeholder="e.g., 2" {...field} onChange={(e) => field.onChange(e.target.value)} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="monthlyCost"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor="monthlyCost">Average monthly salary per accountant</FormLabel>
+                    <FormControl>
+                      <Input id="monthlyCost" type="number" placeholder="e.g., 4000" {...field} onChange={(e) => field.onChange(e.target.value)} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="penaltyFees"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor="penaltyFees">Average annual compliance/penalty fees</FormLabel>
+                    <FormControl>
+                      <Input id="penaltyFees" type="number" placeholder="e.g., 1500" {...field} onChange={(e) => field.onChange(e.target.value)} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="softwareSpend"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor="softwareSpend">Monthly spend on accounting software/tools</FormLabel>
+                    <FormControl>
+                      <Input id="softwareSpend" type="number" placeholder="e.g., 300" {...field} onChange={(e) => field.onChange(e.target.value)} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="hoursSpent"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor="hoursSpent">Estimated hours/month on bookkeeping</FormLabel>
+                    <FormControl>
+                      <Input id="hoursSpent" type="number" placeholder="e.g., 40" {...field} onChange={(e) => field.onChange(e.target.value)} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <div className="mt-6 border-t pt-6">
+                <h3 className="text-lg font-semibold mb-4">Your Contact Details</h3>
+                <FormField
+                  control={form.control}
+                  name="firstName"
+                  render={({ field }) => (
+                    <FormItem className="mb-4">
+                      <FormLabel>First Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="John" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="lastName"
+                  render={({ field }) => (
+                    <FormItem className="mb-4">
+                      <FormLabel>Last Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Doe" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input type="email" placeholder="john.doe@example.com" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="monthlyCost">Average monthly salary per accountant</Label>
-              <Input id="monthlyCost" type="number" placeholder="e.g., 4000" value={monthlyCost} onChange={(e) => setMonthlyCost(e.target.value)} />
-            </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="penaltyFees">Average annual compliance/penalty fees</Label>
-              <Input id="penaltyFees" type="number" placeholder="e.g., 1500" value={penaltyFees} onChange={(e) => setPenaltyFees(e.target.value)} />
-            </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="softwareSpend">Monthly spend on accounting software/tools</Label>
-              <Input id="softwareSpend" type="number" placeholder="e.g., 300" value={softwareSpend} onChange={(e) => setSoftwareSpend(e.target.value)} />
-            </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="hoursSpent">Estimated hours/month on bookkeeping</Label>
-              <Input id="hoursSpent" type="number" placeholder="e.g., 40" value={hoursSpent} onChange={(e) => setHoursSpent(e.target.value)} />
-            </div>
-          </div>
-        </CardContent>
-        <CardFooter>
-          <Button type="submit" className="w-full">Calculate Savings</Button>
-        </CardFooter>
-      </form>
+          </CardContent>
+          <CardFooter>
+            <Button type="submit" className="w-full">Calculate Savings</Button>
+          </CardFooter>
+        </form>
+      </Form>
     </Card>
   );
 };
