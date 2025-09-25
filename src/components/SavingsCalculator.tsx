@@ -93,9 +93,9 @@ export const SavingsCalculator: React.FC = () => {
       const success = await submitToGoogleSheets(submissionData);
 
       if (success) {
-        showSuccess("User details and savings sent successfully to Google Sheets!");
+        showSuccess("Success!");
       } else {
-        showError("Failed to send data to Google Sheets.");
+        showError("Failed");
       }
     } catch (error) {
       console.error("Error sending data to Google Sheets:", error);
