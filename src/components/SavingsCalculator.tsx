@@ -12,6 +12,30 @@ export interface CalculationResult {
   estimatedEfficiencyGain: number;
 }
 
+// Function to submit data to Google Sheets
+const submitToGoogleSheets = async (formData: any) => {
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzY_MoF4kU7X5XBcIbjK1Oy4N_eZewVupffb34Gr0qhcBmIRlZulbn4TK0mn6LGeo57/exec';
+
+  try {
+    // Using 'no-cors' mode means we cannot read the response,
+    // but it's necessary for cross-origin requests to Google Apps Script.
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8',
+      },
+      body: JSON.stringify(formData)
+    });
+
+    // Since we use no-cors, we assume success if no network error occurred.
+    return true;
+  } catch (error) {
+    console.error('Error submitting to Google Sheets:', error);
+    return false;
+  }
+};
+
 export const SavingsCalculator: React.FC = () => {
   const [result, setResult] = React.useState<CalculationResult | null>(null);
 
@@ -57,31 +81,25 @@ export const SavingsCalculator: React.FC = () => {
 
     setResult(calculatedResult);
 
-    // Send data to n8n webhook
+    // Send data to Google Sheets
     try {
-      const webhookData = {
+      const submissionData = {
         firstName: firstName,
         lastName: lastName,
         email: email,
         ...calculatedResult, // Include all calculated results
       };
 
-      const response = await fetch("https://narwhal-credible-jaguar.ngrok-free.app/webhook-test/Insta-Trigger", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(webhookData),
-      });
+      const success = await submitToGoogleSheets(submissionData);
 
-      if (response.ok) {
-        showSuccess("User details and savings sent successfully!");
+      if (success) {
+        showSuccess("User details and savings sent successfully to Google Sheets!");
       } else {
-        showError("Failed to send data to webhook.");
+        showError("Failed to send data to Google Sheets.");
       }
     } catch (error) {
-      console.error("Error sending data to webhook:", error);
-      showError("An error occurred while sending data.");
+      console.error("Error sending data to Google Sheets:", error);
+      showError("An error occurred while sending data to Google Sheets.");
     }
   };
 
