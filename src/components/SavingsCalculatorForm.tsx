@@ -208,7 +208,7 @@ export const SavingsCalculatorForm: React.FC<SavingsCalculatorFormProps> = ({ on
                     </FormControl>
                     <div className="space-y-1 leading-none">
                       <FormLabel>
-                        I agree to be contacted by Global Scale Accountants regarding my savings estimate.
+                        I agree to be contacted by Global Scale Accountants in the future with updates, offers, and helpful information.
                       </FormLabel>
                       <FormMessage />
                     </div>
