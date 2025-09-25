@@ -21,6 +21,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Checkbox } from "@/components/ui/checkbox"; // Import Checkbox
 
 const formSchema = z.object({
   employees: z.preprocess(
@@ -46,6 +47,9 @@ const formSchema = z.object({
   firstName: z.string().min(1, { message: "First name is required." }),
   lastName: z.string().min(1, { message: "Last name is required." }),
   email: z.string().email({ message: "Please enter a valid email address." }),
+  consent: z.boolean().refine((val) => val === true, {
+    message: "You must agree to be contacted to submit the form.",
+  }),
 });
 
 export type CalculatorData = z.infer<typeof formSchema>;
@@ -66,6 +70,7 @@ export const SavingsCalculatorForm: React.FC<SavingsCalculatorFormProps> = ({ on
       firstName: "",
       lastName: "",
       email: "",
+      consent: false, // Initialize consent to false
     },
   });
 
@@ -189,6 +194,27 @@ export const SavingsCalculatorForm: React.FC<SavingsCalculatorFormProps> = ({ on
                   )}
                 />
               </div>
+
+              <FormField
+                control={form.control}
+                name="consent"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <div className="space-y-1 leading-none">
+                      <FormLabel>
+                        I agree to be contacted by Global Scale Accountants regarding my savings estimate.
+                      </FormLabel>
+                      <FormMessage />
+                    </div>
+                  </FormItem>
+                )}
+              />
             </div>
           </CardContent>
           <CardFooter>
