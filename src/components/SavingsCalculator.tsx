@@ -14,7 +14,7 @@ export interface CalculationResult {
 
 // Function to submit data to Google Sheets
 const submitToGoogleSheets = async (formData: any) => {
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzY_MoF4kU7X5XBcIbjK1Oy4N_eZewVupffb34Gr0qhcBmIRlZulbn4TK0mn6LGeo57/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwgc2GKGcqNWAuKX65bd_Oj9ugHv0Z4_t6eNY4-UQ4erq3eTacPd1_vH8DNwo87hlpS/exec';
 
   try {
     // Using 'no-cors' mode means we cannot read the response,
